@@ -66,6 +66,26 @@ The datasets are already present in the google drive (link above). In case you n
 
 Prepare the dataset in the following format for easy use of the code. 
 
+```bash
+"train" Folder-----
+          WNID1
+          WNID2
+          .......
+"val" Folder-----
+          WNID1
+          WNID2
+          .......
+"test_undistorted" Folder-----
+          WNID1
+          WNID2
+          .......
+"test_distorted" Folder-----
+          WNID1
+          WNID2
+          .......
+
+```
+
 ### Training Command for vanilla Resnet50 in jupyter notebook:
 
 ```bash 
