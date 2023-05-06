@@ -7,7 +7,7 @@ from torchvision.datasets import ImageFolder
 
 # Define the model
 
-# get test dataset path...
+# get test dataset path....
 class Classifier(nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
