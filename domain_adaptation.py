@@ -6,6 +6,8 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
 # Define the model
+
+# get test dataset path...
 class Classifier(nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
@@ -84,10 +86,10 @@ def main():
     criterion = nn.CrossEntropyLoss()
 
     # Set the alpha parameter for the domain confusion loss
-    alpha = 0.1
+    alpha = 0.2 # playing around with this
 
     # Train the model using domain adaptation
-    for epoch in range(10):
+    for epoch in range(15): #may change
         train_model(model, source_loader, target_loader, optimizer, criterion, alpha)
 
     # Evaluate
