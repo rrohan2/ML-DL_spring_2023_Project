@@ -5,6 +5,7 @@
 Group Number: 27
 
 Team CA Mentor: Yuta Kobayashi
+
 Team TA Mentor: Jingfeng Wu
 
 Team Members:
