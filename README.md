@@ -57,3 +57,44 @@ vi) data_manipulation.py: This code is used to add 12 types of distortion to cre
 
 ### Dataset
 You can access the datasets from the google drive link. We have given the drive access to anyone with this link. Google drive link: https://drive.google.com/drive/folders/1zJHEcVBM_Yq3USsTXSUZ4z9mu_VlcVpo?usp=sharing
+
+## Reproducing the Code for your dataset
+
+### Dataset Preparation
+
+The datasets are already present in the google drive (link above). In case you need to run with different datasets, follow the procedure below:
+
+Prepare the dataset in the following format for easy use of the code. 
+
+### Training Command for vanilla Resnet50 in jupyter notebook:
+
+```bash 
+!python resnet50_imagenet.py --train_path path/imagenetmini-1000/imagenet-mini/train --val_path path/imagenetmini-1000/imagenet-mini/val
+```
+
+### Training Command for Domain adaptation in jupyter notebook:
+
+```bash 
+!python domain_adaptation.py --train_path path/imagenetmini-1000/imagenet-mini/train --val_path path/imagenetmini-1000/imagenet-mini/val
+```
+
+
+### Testing Command for UNDISTORTED image using Vanilla Resnet50 model in jupyter notebook:
+
+```bash 
+!python test_undistorted.py --test_dataset "" --loaddirec "" -
+```
+
+### Testing Command for DISTORTED image using Vanilla Resnet50 model in jupyter notebook:
+
+```bash 
+!python test_distorted.py --test_dataset "" --loaddirec "" -
+```
+
+### Testing Command for DISTORTED image using Domain adaptation model in jupyter notebook:
+
+```bash 
+!python test_distorted.py --test_dataset "" --loaddirec "" -
+```
+
+
