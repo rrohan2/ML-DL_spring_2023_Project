@@ -49,9 +49,9 @@ ii) domain_adaptation.py: This code is training the undistorted imagenet dataset
 
 iii) train.py: This code is used to train the model and the model can be selected as per the user's choice. The weighted model is saved in the google drive (link attached below this section).
 
-iv) test_distorted.py: This code is used to test the trained model by using the "res50model_checkpoint.pth" or "dom_ada_checkpoint.pth" (automatically save in "imagenet-mini" folder after training) for distorted images. This code is run for Vanilla Resnet50 and Domain Adaptation model to compare the accuracy on distorted images
+iv) test_distorted.py: This code is used to test the trained model by using the "res50model_checkpoint.pth" or "dom_ada_checkpoint.pth" (automatically saved in "imagenet-mini" folder after training) for distorted images. This code is run for Vanilla Resnet50 and Domain Adaptation model to compare the accuracy on distorted images
 
-v) test_undistorted.py: This code is used to test the trained model using the trained model by using the "res50model_checkpoint.pth" (automatically save in "imagenet-mini" folder after training) for undistorted images. This is run on Vanilla Resnet50 to show the state of the art model.
+v) test_undistorted.py: This code is used to test the trained model using the trained model by using the "res50model_checkpoint.pth" (automatically saved in "imagenet-mini" folder after training) for undistorted images. This is run on Vanilla Resnet50 to show the state of the art model.
 
 vi) data_manipulation.py: This code is used to add 12 types of distortion to create distorted test images.
 
