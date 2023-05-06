@@ -63,7 +63,7 @@ You can access the datasets from the google drive link. We have given the drive 
 ### Dataset Preparation
 
 The datasets are already present in the google drive (link above). The imageNet naming convention is n12345678_123 where
-n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. In case you need to run with different datasets, follow the procedure below:
+n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out this link to get information about the class ID and class name: https://deeplearning.cms.waikato.ac.nz/user-guide/class-maps/IMAGENET/ . In case you need to run with different datasets, follow the procedure below:
 
 Create an "imagenet-mini" folder and prepare the dataset in the following format for easy use of the code. 
 
