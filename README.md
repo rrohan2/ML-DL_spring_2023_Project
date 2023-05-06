@@ -58,7 +58,7 @@ vi) data_manipulation.py: This code is used to add 12 types of distortion to cre
 ### Dataset
 You can access the datasets from the google drive link. We have given the drive access to anyone with this link. Google drive link: https://drive.google.com/drive/folders/1a8yqwGKm5Jo7cPLHw69rjfCaQRH5Rfff?usp=sharing
 
-The imageNet naming convention is n12345678_123 where n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out the "synset_mapping.txt" file to get more information about the class ID and class name.
+The imageNet naming convention is n12345678_123 where n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out the "synset_mapping.txt" file to get more information about the class ID and class name. When we use a model from the torchvision library, such as ResNet, the mapping between the class labels and synset IDs is already incorporated into the model. The pre-trained models in torchvision are trained on the ImageNet dataset, and they come with a default mapping between the class labels and synset IDs.
 
 ## Reproducing the Code for your dataset
 
