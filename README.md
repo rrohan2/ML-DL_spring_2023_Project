@@ -1,8 +1,8 @@
 # ML-DL_spring_2023_Project
 
-### Project Name: Domain-supervised learning of generalizable models
+###Group Number: 27
 
-Group Number: 27
+### Project Name: Domain-supervised learning of generalizable models
 
 Team CA Mentor: Yuta Kobayashi
 
