@@ -1,15 +1,16 @@
-import numpy as np 
-import pandas as pd 
 import torch
-import torchvision as tv
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optims
+import torch.optim as optim
 import torchvision.transforms as transforms
-from PIL import Image
-import os
+import torchvision.datasets as datasets
+from torch.utils.data import DataLoader
+import torchvision
+from torchvision import transforms, datasets, models
 import matplotlib.pyplot as plt
+import numpy as np
 import argparse
+torch.cuda.empty_cache()
+
 
 # Create an argument parser
 parser = argparse.ArgumentParser(description='Train a ResNet model on image datasets')
@@ -25,141 +26,86 @@ args = parser.parse_args()
 train_path = args.train_path
 val_path = args.val_path
 
-def resize_image(src, size=(128, 128), bgc="white"):
-    src.thumbnail(size, Image.ANTIALIAS)
-    
-    new_image = Image.new("RGB", size, bgc)
-    
-    new_image.paste(src, (int((size[0]-src.size[0]) / 2)), int((size[1] - src.size[1]) / 2))
-    
-    return new_image
-
 transform = transforms.Compose([
-    transforms.Resize([256, 256]),
-    transforms.RandomHorizontalFlip(),
-    transforms.RandomVerticalFlip(),
-    transforms.ColorJitter(brightness=0.5, contrast=0),
+    transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 ])
 
-def load(train_path, val_path):
-    train_dataset = tv.datasets.ImageFolder(root=train_path, transform=transform)
-    val_dataset = tv.datasets.ImageFolder(root=val_path, transform=transform)
+train_dataset = torchvision.datasets.ImageFolder(root='/content/drive/MyDrive/imagenet-mini/train', transform=transform)
 
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset,
-        batch_size=50,
-        num_workers=0,
-        shuffle=False
-    )
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=48, shuffle=True)
 
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset,
-        batch_size=50,
-        num_workers=0,
-        shuffle=False
-    )
+val_dataset = torchvision.datasets.ImageFolder(root='/content/drive/MyDrive/imagenet-mini/val', transform=transform)
 
-    return train_loader, val_loader
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=48, shuffle=True)
 
-train_path = '/content/drive/MyDrive/imagenet-mini/train'
-val_path = '/content/drive/MyDrive/imagenet-mini/val'
 
-train_loader, val_loader = load(train_path, val_path)
-
+# Training
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
 
-# model = tv.models.resnet50(weights=tv.models.ResNet50_Weights.DEFAULT)
 
-# model = model.to(device)
+# Load pre-trained ResNet-50 model
+model = models.resnet50(pretrained=True)
 
-class ResNet50(nn.Module):
-    def __init__(self, num_classes):
-        super(ResNet50, self).__init__()
-        self.resnet = tv.models.resnet50(pretrained=True)  # Load the pretrained ResNet-50 model
-        num_features = self.resnet.fc.in_features
-        self.resnet.fc = nn.Linear(num_features, num_classes)  # Replace the fully connected layer
+# Modify the last fully-connected layer to match the number of classes in ImageNet dataset
+num_classes = 1000 # Number of classes in ImageNet dataset
+model.fc = nn.Linear(model.fc.in_features, num_classes)
 
-    def forward(self, x):
-        x = self.resnet(x)
-        return x
-
-# Create an instance of the ResNet50 model
-num_classes = 1000  # Number of classes in the ImageNet dataset
-model = ResNet50(num_classes)
+# Set model to device
 model = model.to(device)
 
-criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
+# Define loss function and optimizer
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 train_loss = []
 train_accuracy = []
 val_loss = []
 val_accuracy = []
-num_epochs = 500
-
+# Train the model
+num_epochs = 10
 for epoch in range(num_epochs):
+    # Train on training set
+    model.train()
     train_epoch_loss = 0.0
     train_correct = 0
-    train_total = 0
-    
-    val_epoch_loss = 0.0
-    val_correct = 0
-    val_total = 0
-    
-    # Training phase
-    model.train()
-    for batch_idx, (inputs, labels) in enumerate(train_loader):
-        inputs = inputs.to(device)
-        labels = labels.to(device)
-        
+    for inputs, labels in train_loader:
+        inputs, labels = inputs.to(device), labels.to(device)
         optimizer.zero_grad()
-        
         outputs = model(inputs)
         loss = criterion(outputs, labels)
-        
         loss.backward()
         optimizer.step()
-        
-        train_epoch_loss += loss.item()
-        
-        _, predicted = outputs.max(1)
-        train_total += labels.size(0)
-        train_correct += predicted.eq(labels).sum().item()
-    
-    train_epoch_accuracy = 100 * train_correct / train_total
-    train_loss.append(train_epoch_loss / len(train_loader))
-    train_accuracy.append(train_epoch_accuracy)
-    
-    # Validation phase
+        train_epoch_loss += loss.item() * inputs.size(0)
+        _, predicted = torch.max(outputs.data, 1)
+        train_correct += (predicted == labels).sum().item()
+    train_epoch_loss = train_epoch_loss / len(train_loader.dataset)
+    train_epoch_acc = train_correct / len(train_loader.dataset)
+    train_loss.append(train_epoch_loss)
+    train_accuracy.append(train_epoch_acc)
+    # Evaluate on validation set
     model.eval()
+    val_epoch_loss = 0.0
+    val_correct = 0
     with torch.no_grad():
         for inputs, labels in val_loader:
-            inputs = inputs.to(device)
-            labels = labels.to(device)
-            
+            inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
             loss = criterion(outputs, labels)
-            
-            val_epoch_loss += loss.item()
-            
-            _, predicted = outputs.max(1)
-            val_total += labels.size(0)
-            val_correct += predicted.eq(labels).sum().item()
-    
-    val_epoch_accuracy = 100 * val_correct / val_total
-    val_loss.append(val_epoch_loss / len(val_loader))
-    val_accuracy.append(val_epoch_accuracy)
-    
-    print(f"Epoch {epoch+1}/{num_epochs}:")
-    print(f"Train Loss: {train_loss[epoch]:.4f} - Train Accuracy: {train_epoch_accuracy:.2f}%")
-    print(f"Val Loss: {val_loss[epoch]:.4f} - Val Accuracy: {val_epoch_accuracy:.2f}%")
+            val_epoch_loss += loss.item() * inputs.size(0)
+            _, predicted = torch.max(outputs.data, 1)
+            val_correct += (predicted == labels).sum().item()
+    val_epoch_loss = val_epoch_loss / len(val_loader.dataset)
+    val_epoch_acc = val_correct / len(val_loader.dataset)
+    val_loss.append(val_epoch_loss)
+    val_accuracy.append(val_epoch_acc)
+    print("Epoch %d, Training Loss: %.3f, Training Accuracy: %.3f, Validation Loss: %.3f, Validation Accuracy: %.3f" %
+              (epoch + 1, train_epoch_loss, train_epoch_acc, val_epoch_loss, val_epoch_acc))
 
 # Save the model checkpoint
 torch.save(model.state_dict(), '/content/drive/MyDrive/imagenet-mini/res50model_checkpoint.pth')
-    
+
 # Plotting loss and accuracy
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 epochs = range(1, num_epochs + 1)

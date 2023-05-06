@@ -1,8 +1,8 @@
 # ML-DL_spring_2023_Project
 
-### Project Name: Domain-supervised learning of generalizable models
+### Group Number: 27
 
-Group Number: 27
+### Project Name: Domain-supervised learning of generalizable models
 
 Team CA Mentor: Yuta Kobayashi
 
@@ -49,14 +49,16 @@ ii) domain_adaptation.py: This code is training the undistorted imagenet dataset
 
 iii) train.py: This code is used to train the model and the model can be selected as per the user's choice. The weighted model is saved in the google drive (link attached below this section).
 
-iv) test_distorted.py: This code is used to test the trained model using the trained model by using the "model_checkpoint.pth" for distorted images. This code is run for Vanilla Resnet50 and Domain Adaptation model to compare the accuracy on distorted images
+iv) test_distorted.py: This code is used to test the trained model by using the "res50model_checkpoint.pth" or "dom_ada_checkpoint.pth" (automatically saved in "imagenet-mini" folder after training) for distorted images. This code is run for Vanilla Resnet50 and Domain Adaptation model to compare the accuracy on distorted images
 
-v) test_undistorted.py: This code is used to test the trained model using the trained model by using the "model_checkpoint.pth" for undistorted images. This is run on Vanilla Resnet50 to show the state of the art model.
+v) test_undistorted.py: This code is used to test the trained model using the trained model by using the "res50model_checkpoint.pth" (automatically saved in "imagenet-mini" folder after training) for undistorted images. This is run on Vanilla Resnet50 to show the state of the art model.
 
 vi) data_manipulation.py: This code is used to add 12 types of distortion to create distorted test images.
 
 ### Dataset
 You can access the datasets from the google drive link. We have given the drive access to anyone with this link. Google drive link: https://drive.google.com/drive/folders/1a8yqwGKm5Jo7cPLHw69rjfCaQRH5Rfff?usp=sharing
+
+The imageNet naming convention is n12345678_123 where n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out the "synset_mapping.txt" file to get more information about the class ID and class name. When we use a model from the torchvision library, such as ResNet, the mapping between the class labels and synset IDs is already incorporated into the model. The pre-trained models in torchvision are trained on the ImageNet dataset, and they come with a default mapping between the class labels and synset IDs.
 
 ## Reproducing the Code for your dataset
 
@@ -64,7 +66,51 @@ You can access the datasets from the google drive link. We have given the drive 
 
 The datasets are already present in the google drive (link above). In case you need to run with different datasets, follow the procedure below:
 
-Prepare the dataset in the following format for easy use of the code. 
+Create an "imagenet-mini" folder and prepare the dataset in the following format for easy use of the code. 
+
+```bash
+"train" Folder-----
+          WNID1
+             img1
+             img2
+             ...
+          WNID2
+             img1
+             img2
+             ...          
+          .......
+"val" Folder-----
+          WNID1
+             img1
+             img2
+             ...
+          WNID2
+             img1
+             img2
+             ...
+          .......
+"test_undistorted" Folder-----
+          WNID1
+             img1
+             img2
+             ...
+          WNID2
+             img1
+             img2
+             ...
+          .......
+"test_distorted" Folder-----
+          WNID1
+             img1
+             img2
+             ...
+          WNID2
+             img1
+             img2
+             ...
+          .......
+
+```
 
 ### Training Command for vanilla Resnet50 in jupyter notebook:
 
