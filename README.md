@@ -82,19 +82,19 @@ Prepare the dataset in the following format for easy use of the code.
 ### Testing Command for UNDISTORTED image using Vanilla Resnet50 model in jupyter notebook:
 
 ```bash 
-!python test_undistorted.py --test_path /content/drive/MyDrive/imagenet-mini/test_undistorted --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/res50model_checkpoint.pth/res50model_checkpoint.pth"
+!python test_undistorted.py --test_path "/content/drive/MyDrive/imagenet-mini/test_undistorted" --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/res50model_checkpoint.pth/res50model_checkpoint.pth"
 ```
 
 ### Testing Command for DISTORTED image using Vanilla Resnet50 model in jupyter notebook:
 
 ```bash 
-!python test_undistorted.py --test_path /content/drive/MyDrive/imagenet-mini/test_distorted --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/res50model_checkpoint.pth/res50model_checkpoint.pth"
+!python test_undistorted.py --test_path "/content/drive/MyDrive/imagenet-mini/test_distorted" --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/res50model_checkpoint.pth/res50model_checkpoint.pth"
 ```
 
 ### Testing Command for DISTORTED image using Domain adaptation model in jupyter notebook:
 
 ```bash 
-!python test_undistorted.py --test_path /content/drive/MyDrive/imagenet-mini/test_distorted --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/dom_ada_checkpoint.pth"
+!python test_undistorted.py --test_path "/content/drive/MyDrive/imagenet-mini/test_distorted" --checkpoint_dir "/content/drive/MyDrive/imagenet-mini/dom_ada_checkpoint.pth"
 ```
 
 
