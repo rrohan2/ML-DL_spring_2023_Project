@@ -58,12 +58,13 @@ vi) data_manipulation.py: This code is used to add 12 types of distortion to cre
 ### Dataset
 You can access the datasets from the google drive link. We have given the drive access to anyone with this link. Google drive link: https://drive.google.com/drive/folders/1a8yqwGKm5Jo7cPLHw69rjfCaQRH5Rfff?usp=sharing
 
+The imageNet naming convention is n12345678_123 where n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out the "imagenet1000_clsidx_to_labels.txt" file to get more information about the class ID and class name.
+
 ## Reproducing the Code for your dataset
 
 ### Dataset Preparation
 
-The datasets are already present in the google drive (link above). The imageNet naming convention is n12345678_123 where
-n12345678 is the synset id or WNID, and n12345678_123.JPEG is the name of the image. Check out this link to get information about the class ID and class name: https://deeplearning.cms.waikato.ac.nz/user-guide/class-maps/IMAGENET/ . In case you need to run with different datasets, follow the procedure below:
+The datasets are already present in the google drive (link above). In case you need to run with different datasets, follow the procedure below:
 
 Create an "imagenet-mini" folder and prepare the dataset in the following format for easy use of the code. 
 
