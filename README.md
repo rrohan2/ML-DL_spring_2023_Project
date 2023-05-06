@@ -64,7 +64,7 @@ You can access the datasets from the google drive link. We have given the drive 
 
 The datasets are already present in the google drive (link above). In case you need to run with different datasets, follow the procedure below:
 
-Prepare the dataset in the following format for easy use of the code. 
+Create an "imagenet-mini" folder and prepare the dataset in the following format for easy use of the code. 
 
 ```bash
 "train" Folder-----
