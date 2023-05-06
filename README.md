@@ -69,19 +69,43 @@ Prepare the dataset in the following format for easy use of the code.
 ```bash
 "train" Folder-----
           WNID1
+             img1
+             img2
+             ...
           WNID2
+             img1
+             img2
+             ...          
           .......
 "val" Folder-----
           WNID1
+             img1
+             img2
+             ...
           WNID2
+             img1
+             img2
+             ...
           .......
 "test_undistorted" Folder-----
           WNID1
+             img1
+             img2
+             ...
           WNID2
+             img1
+             img2
+             ...
           .......
 "test_distorted" Folder-----
           WNID1
+             img1
+             img2
+             ...
           WNID2
+             img1
+             img2
+             ...
           .......
 
 ```
