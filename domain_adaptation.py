@@ -2,32 +2,23 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
+from torchvision import models
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Define the model
 
 # get test dataset path....
 class Classifier(nn.Module):
-    def __init__(self):
+    def __init__(self, nin, num_classes):
         super(Classifier, self).__init__()
-        self.features = nn.Sequential(
-            nn.Conv2d(3, 32, 5),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
-            nn.Conv2d(32, 64, 5),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
-            nn.Flatten()
-        )
         self.classifier = nn.Sequential(
-            nn.Linear(64 * 5 * 5, 256),
-            nn.ReLU(),
-            nn.Linear(256, 10)
+            nn.Linear(nin, num_classes)
         )
 
     def forward(self, x):
-        x = self.features(x)
         x = self.classifier(x)
         return x
 
@@ -81,7 +72,13 @@ def main():
     target_loader = DataLoader(target_dataset, batch_size=64, shuffle=True, num_workers=4)
 
     # Set up the model, optimizer, and criterion
-    model = Classifier()
+    # Load pre-trained ResNet-50 model
+    model = models.resnet50(pretrained=True)
+
+    # Modify the last fully-connected layer to match the number of classes in ImageNet dataset
+    num_classes = 1000 # Number of classes in ImageNet dataset    
+    model = Classifier(model.fc.in_features, num_classes)
+    model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss()
 
